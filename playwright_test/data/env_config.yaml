@@ -1,0 +1,27 @@
+# 环境配置文件
+test:
+  base_url: "http://localhost:3000"
+  timeout: 30000
+  headless: false
+  # 默认浏览器配置（可被命令行参数覆盖）
+  browser_type: "chromium"
+  browser_channel: "chrome"
+  
+env:
+  base_url: "https://your-production-app.com"
+  timeout: 30000
+  headless: true
+  browser_type: "chromium"
+  browser_channel: "chrome"
+
+# 多浏览器配置（用于一次性测试多个浏览器）
+browsers:
+  - name: "chrome"
+    browser_type: "chromium"
+    browser_channel: "chrome"
+  - name: "webkit"
+    browser_type: "webkit"
+    browser_channel: ""
+  - name: "chromium"
+    browser_type: "chromium"
+    browser_channel: ""

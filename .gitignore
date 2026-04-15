@@ -46,3 +46,7 @@ pids/
 *.pid
 *.seed
 *.pid.lock
+
+# Allure 测试报告（自动生成，不需要提交）
+allure-results/
+allure-report/

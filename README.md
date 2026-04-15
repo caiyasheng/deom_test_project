@@ -8,8 +8,8 @@
 
 ```bash
 # 在项目根目录
-pythoh -m venv demo_project
-source demo_project/bin/activate  # macOS/Linux
+conda create -n env_demo_project python=3.11
+conda activate env_demo_project
 pip install -r requirements.txt
 # 或
 python3 -m pip install -r requirements.txt
@@ -30,6 +30,10 @@ python demo_project/app.py
 
 - 默认端口 **11011**，可通过环境变量 `DEMO_PORT` 修改，例如：`DEMO_PORT=8080 python app.py`
 - 服务地址：http://localhost:11011
+# 前端启动
+npm run dev
+
+服务地址：http://localhost:3000
 
 ## 演示账号
 

@@ -1,0 +1,63 @@
+# 测试数据文件
+# 数据驱动测试的测试数据
+
+# 登录测试数据
+login:
+  valid_accounts:
+    - username: "admin"
+      password: "admin123"
+      description: "管理员账号登录"
+    - username: "test"
+      password: "test123"
+      description: "普通用户账号登录"
+  
+  invalid_accounts:
+    - username: "wronguser"
+      password: "wrongpass"
+      expected_error: "登录失败，请检查网络连接"
+      description: "错误用户名"
+    - username: "admin"
+      password: "wrongpassword"
+      expected_error: "登录失败，请检查网络连接"
+      description: "错误密码"
+    - username: ""
+      password: "admin123"
+      expected_error: ""
+      description: "用户名为空"
+    - username: "admin"
+      password: ""
+      expected_error: ""
+      description: "密码为空"
+
+# 用户管理测试数据
+user_management:
+  add_user:
+    - username: "user001"
+      email: "user001@example.com"
+      password: "password123"
+      description: "添加普通用户"
+    - username: "user002"
+      email: "user002@example.com"
+      password: "password456"
+      description: "添加另一个用户"
+  
+  edit_user:
+    - new_email: "updated@example.com"
+      description: "更新用户邮箱"
+  
+  delete_user:
+    - username: "user001"
+      description: "删除用户 user001"
+
+# 导航测试数据
+navigation:
+  tabs:
+    - tab_id: "dashboard"
+      tab_name: "仪表盘"
+      expected_title: "仪表盘"
+    - tab_id: "users"
+      tab_name: "用户管理"
+      expected_title: "用户管理"
+    - tab_id: "profile"
+      tab_name: "个人信息"
+      expected_title: "个人信息"
