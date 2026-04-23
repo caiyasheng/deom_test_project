@@ -73,11 +73,18 @@ class TestUserManagement:
         # 填写用户信息
         modal.add_user(username, email, password)
         
-        # 等待模态框关闭
-        modal.wait_for_element_visible('button:has-text("退出登录")', timeout=10000)
+        # 等待模态框关闭并刷新表格
+        page.wait_for_timeout(2000)
         
         # 验证用户添加到表格中
-        assert users_page.is_user_in_table(username), f"用户 {username} 应该在表格中"
+        # 使用更可靠的验证方式 - 等待表格中出现用户名
+        try:
+            page.wait_for_selector(f"tr:has-text('{username}')", timeout=5000)
+            assert users_page.is_user_in_table(username), f"用户 {username} 应该在表格中"
+        except Exception as e:
+            # 如果验证失败，截图调试
+            page.screenshot(path="add_user_debug.png")
+            assert False, f"添加用户失败，用户 {username} 未在表格中显示。已保存截图调试"
     
     @allure.story("编辑用户")
     @pytest.mark.parametrize(
@@ -168,21 +175,21 @@ class TestUserManagement:
         # 获取删除前的行数
         rows_before = users_page.get_table_rows_count()
         
+        # 先设置好对话框监听器，再触发删除操作
+        # 注意：必须在点击删除按钮之前设置 dialog 监听
+        page.once("dialog", lambda dialog: dialog.accept())
+        
         # 点击删除按钮
         users_page.click_delete_button(username)
         
-        # 处理删除确认对话框
-        try:
-            # 等待确认对话框出现并点击确认
-            confirm_button = page.get_by_role("button", name="确认").or_(page.get_by_role("button", name="确定")).or_(page.locator("button:has-text('删除')"))
-            if confirm_button.is_visible(timeout=2000):
-                confirm_button.click()
-        except Exception:
-            # 如果没有确认对话框，继续执行
-            pass
-        
-        # 等待删除完成
-        page.wait_for_timeout(1000)
+        # 等待删除完成并刷新表格
+        page.wait_for_timeout(3000)
         
         # 验证用户不在表格中
+        # 使用 wait_for_selector 来等待用户行消失
+        try:
+            page.wait_for_selector(f"tr:has-text('{username}')", state="hidden", timeout=5000)
+        except Exception:
+            pass  # 超时忽略，继续验证
+        
         assert not users_page.is_user_in_table(username), f"用户 {username} 应该被删除"
