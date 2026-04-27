@@ -975,8 +975,52 @@ export default {
       return JSON.stringify(detail).substring(0, 50)
     }
 
+    // 菜单和 URL 的映射关系
+    const menuToPath = {
+      'dashboard': '/dashboard',
+      'users': '/users',
+      'orders': '/orders',
+      'notifications': '/notifications',
+      'logs': '/logs',
+    }
+
+    const pathToMenu = {
+      '/dashboard': 'dashboard',
+      '/users': 'users',
+      '/orders': 'orders',
+      '/notifications': 'notifications',
+      '/logs': 'logs',
+    }
+
+    // 根据 URL 设置菜单
+    const setMenuFromURL = () => {
+      const path = window.location.pathname
+      const menu = pathToMenu[path]
+      if (menu && visibleMenus.value.find(m => m.id === menu)) {
+        activeMenu.value = menu
+      }
+    }
+
+    // 根据菜单更新 URL
+    const updateURLFromMenu = (menu) => {
+      const path = menuToPath[menu]
+      if (path) {
+        window.history.pushState({ menu }, '', path)
+      }
+    }
+
+    // 监听浏览器前进/后退
+    window.addEventListener('popstate', (event) => {
+      if (event.state?.menu) {
+        activeMenu.value = event.state.menu
+      } else {
+        setMenuFromURL()
+      }
+    })
+
     // 监听菜单变化
     watch(activeMenu, async (menu) => {
+      updateURLFromMenu(menu)
       if (menu === 'users' && (isAdmin.value || isOperator.value)) {
         await fetchUsers()
       } else if (menu === 'logs' && (isAdmin.value || isOperator.value)) {
@@ -996,7 +1040,12 @@ export default {
         fetchUserInfo().then(() => {
           fetchOrders()
           fetchNotifications()
+          // 登录后根据 URL 设置菜单
+          setMenuFromURL()
         })
+      } else {
+        // 未登录时根据 URL 设置菜单（虽然显示的是登录页）
+        setMenuFromURL()
       }
     })
 
