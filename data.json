@@ -1,0 +1,299 @@
+{
+  "users": {
+    "1": {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "email": "admin@demo.com",
+      "status": "active",
+      "role": "Admin",
+      "level": "vip",
+      "organization": "管理层"
+    },
+    "2": {
+      "id": "2",
+      "username": "test",
+      "password": "test123",
+      "email": "test@demo.com",
+      "status": "active",
+      "role": "Operator",
+      "level": "normal",
+      "organization": "运营部"
+    },
+    "3": {
+      "id": "3",
+      "username": "viewer",
+      "password": "viewer123",
+      "email": "viewer@demo.com",
+      "status": "active",
+      "role": "Viewer",
+      "level": "normal",
+      "organization": "观察部"
+    },
+    "4": {
+      "id": "4",
+      "username": "frozen",
+      "password": "frozen123",
+      "email": "frozen@demo.com",
+      "status": "frozen",
+      "role": "Operator",
+      "level": "normal",
+      "organization": "运营部"
+    },
+    "5": {
+      "id": "5",
+      "username": "inactive",
+      "password": "inactive123",
+      "email": "inactive@demo.com",
+      "status": "inactive",
+      "role": "Viewer",
+      "level": "normal",
+      "organization": "待激活"
+    }
+  },
+  "orders": {
+    "43f534bc-4a71-441a-9b4e-a0dcf381e901": {
+      "id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "order_no": "ORD-20260427-0001",
+      "user_id": "1",
+      "creator_name": "admin",
+      "title": "老白干酒",
+      "description": "白酒",
+      "amount": 15.0,
+      "status": "approved",
+      "created_at": "2026-04-27T18:18:22.135253Z",
+      "updated_at": "2026-04-27T18:18:30.801274Z",
+      "submitted_at": "2026-04-27T18:18:23.833390Z",
+      "approved_at": "2026-04-27T18:18:30.801274Z",
+      "completed_at": null,
+      "cancelled_at": null,
+      "approver_id": "1",
+      "approver_name": "admin",
+      "approval_comment": "ok",
+      "cancel_reason": null
+    },
+    "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790": {
+      "id": "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790",
+      "order_no": "ORD-20260428-0002",
+      "user_id": "1",
+      "creator_name": "admin",
+      "title": "红酒",
+      "description": "红酒500ml",
+      "amount": 1000.0,
+      "status": "pending",
+      "created_at": "2026-04-28T08:12:45.723333Z",
+      "updated_at": "2026-04-28T08:12:49.123607Z",
+      "submitted_at": "2026-04-28T08:12:49.123607Z",
+      "approved_at": null,
+      "completed_at": null,
+      "cancelled_at": null,
+      "approver_id": null,
+      "approver_name": null,
+      "approval_comment": null,
+      "cancel_reason": null
+    }
+  },
+  "notifications": {
+    "58708a88-ed0d-410a-8c36-160a6f2117b4": {
+      "id": "58708a88-ed0d-410a-8c36-160a6f2117b4",
+      "receiver_id": "1",
+      "type": "order_created",
+      "title": "新订单: ORD-20260427-0001",
+      "content": "用户 admin 创建了新订单 '老白干酒'，金额 15 元",
+      "related_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "is_read": true,
+      "created_at": "2026-04-27T18:18:22.135862Z"
+    },
+    "93025271-4911-4f4d-b32f-d269d504c7f8": {
+      "id": "93025271-4911-4f4d-b32f-d269d504c7f8",
+      "receiver_id": "1",
+      "type": "order_submitted",
+      "title": "订单待审批: ORD-20260427-0001",
+      "content": "用户 admin 提交了订单 '老白干酒'，金额 15.0 元",
+      "related_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "is_read": true,
+      "created_at": "2026-04-27T18:18:23.834077Z"
+    },
+    "6d7e3f22-ac1a-47e6-bc86-e53a48c8244c": {
+      "id": "6d7e3f22-ac1a-47e6-bc86-e53a48c8244c",
+      "receiver_id": "1",
+      "type": "order_approved",
+      "title": "订单已通过审批: ORD-20260427-0001",
+      "content": "您的订单 '老白干酒' 已通过审批，审批意见: ok",
+      "related_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "is_read": true,
+      "created_at": "2026-04-27T18:18:30.801813Z"
+    },
+    "7a3e06cd-d462-4210-8f81-df2129192e4a": {
+      "id": "7a3e06cd-d462-4210-8f81-df2129192e4a",
+      "receiver_id": "1",
+      "type": "order_created",
+      "title": "新订单: ORD-20260428-0002",
+      "content": "用户 admin 创建了新订单 '红酒'，金额 1000 元",
+      "related_id": "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790",
+      "is_read": false,
+      "created_at": "2026-04-28T08:12:45.724316Z"
+    },
+    "c21478c2-de81-44da-a971-9515bab46052": {
+      "id": "c21478c2-de81-44da-a971-9515bab46052",
+      "receiver_id": "1",
+      "type": "order_submitted",
+      "title": "订单待审批: ORD-20260428-0002",
+      "content": "用户 admin 提交了订单 '红酒'，金额 1000.0 元",
+      "related_id": "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790",
+      "is_read": false,
+      "created_at": "2026-04-28T08:12:49.125725Z"
+    }
+  },
+  "logs": [
+    {
+      "id": "14d53dd3-98ea-4ff4-afcb-e7000a677efd",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T10:08:57.804924Z"
+    },
+    {
+      "id": "faded57d-de0e-4592-a113-ac4a56126eb9",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:46:15.709162Z"
+    },
+    {
+      "id": "875d8010-3b1d-4997-a33a-0b3b5d7c851e",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:19:26.762564Z"
+    },
+    {
+      "id": "f9a04c5e-411f-4400-b850-5b8a94ad8f4f",
+      "user_id": "1",
+      "username": "admin",
+      "action": "order.submit",
+      "target_type": "order",
+      "target_id": "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790",
+      "detail": {
+        "order_no": "ORD-20260428-0002"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:12:49.124859Z"
+    },
+    {
+      "id": "5d8bfaf4-bcef-48b1-a756-1175924d45ff",
+      "user_id": "1",
+      "username": "admin",
+      "action": "order.create",
+      "target_type": "order",
+      "target_id": "aacbfae4-1ce1-4829-8a9f-0c5e5d8eb790",
+      "detail": {
+        "order_no": "ORD-20260428-0002",
+        "title": "红酒",
+        "amount": 1000.0
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:12:45.723962Z"
+    },
+    {
+      "id": "c983b9e0-9b3d-496e-b5c0-2dbcd89ec7aa",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:12:10.911628Z"
+    },
+    {
+      "id": "6e74a027-ea57-49d9-9940-f93e3e5f1579",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-28T08:02:55.347183Z"
+    },
+    {
+      "id": "03dc38dd-2222-485d-997a-ba9d6b5ab132",
+      "user_id": "1",
+      "username": "admin",
+      "action": "order.approve",
+      "target_type": "order",
+      "target_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "detail": {
+        "order_no": "ORD-20260427-0001",
+        "comment": "ok"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-27T18:18:30.801584Z"
+    },
+    {
+      "id": "6e125d11-b502-4ba1-954b-f99fc3a9edb2",
+      "user_id": "1",
+      "username": "admin",
+      "action": "order.submit",
+      "target_type": "order",
+      "target_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "detail": {
+        "order_no": "ORD-20260427-0001"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-27T18:18:23.833698Z"
+    },
+    {
+      "id": "786cad17-6a15-4ad1-9eba-741af16d9a59",
+      "user_id": "1",
+      "username": "admin",
+      "action": "order.create",
+      "target_type": "order",
+      "target_id": "43f534bc-4a71-441a-9b4e-a0dcf381e901",
+      "detail": {
+        "order_no": "ORD-20260427-0001",
+        "title": "老白干酒",
+        "amount": 15.0
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-27T18:18:22.135659Z"
+    },
+    {
+      "id": "a6d8ffd5-d472-4bf5-8de8-51c9e4cd54b0",
+      "user_id": "1",
+      "username": "admin",
+      "action": "user.login",
+      "target_type": "user",
+      "target_id": "1",
+      "detail": {
+        "username": "admin"
+      },
+      "ip_address": "127.0.0.1",
+      "created_at": "2026-04-27T18:17:59.257535Z"
+    }
+  ],
+  "order_counter": 2
+}

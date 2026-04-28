@@ -4,6 +4,7 @@
 """
 
 import os
+import json
 import uuid
 from datetime import datetime
 from functools import wraps
@@ -15,6 +16,7 @@ app.config["SECRET_KEY"] = "demo-secret"
 
 # ==================== 数据存储 ====================
 
+DATA_FILE = os.path.join(os.path.dirname(__file__), "data.json")
 USERS: dict[str, dict] = {}
 TOKENS: dict[str, str] = {}  # token -> user_id
 ORDERS: dict[str, dict] = {}
@@ -91,6 +93,36 @@ def _generate_order_no():
     return f"ORD-{date_str}-{ORDER_COUNTER:04d}"
 
 
+def _save_data():
+    """保存数据到 JSON 文件"""
+    data = {
+        "users": USERS,
+        "orders": ORDERS,
+        "notifications": NOTIFICATIONS,
+        "logs": LOGS,
+        "order_counter": ORDER_COUNTER,
+    }
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def _load_data():
+    """从 JSON 文件加载数据"""
+    global ORDER_COUNTER
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            USERS.update(data.get("users", {}))
+            ORDERS.update(data.get("orders", {}))
+            NOTIFICATIONS.update(data.get("notifications", {}))
+            LOGS.extend(data.get("logs", []))
+            ORDER_COUNTER = data.get("order_counter", 0)
+            print(f"✓ 已加载数据：{len(USERS)} 用户，{len(ORDERS)} 订单，{len(NOTIFICATIONS)} 通知，{len(LOGS)} 日志")
+        except Exception as e:
+            print(f"✗ 加载数据失败：{e}")
+
+
 # ==================== 工具函数 ====================
 
 def _resp(code=200, msg="success", data=None):
@@ -141,6 +173,7 @@ def _log_action(action: str, target_type: str, target_id: str, detail: dict = No
         "created_at": datetime.now().isoformat() + "Z",
     }
     LOGS.insert(0, log_entry)
+    _save_data()
 
 
 def _create_notification(receiver_ids: list, notify_type: str, title: str, content: str, related_id: str = None):
@@ -157,6 +190,7 @@ def _create_notification(receiver_ids: list, notify_type: str, title: str, conte
             "created_at": datetime.now().isoformat() + "Z",
         }
         NOTIFICATIONS[notif["id"]] = notif
+    _save_data()
 
 
 def _notify_admins(notify_type: str, title: str, content: str, related_id: str = None):
@@ -308,6 +342,7 @@ def create_user():
         "organization": organization,
         "created_at": now,
     }
+    _save_data()
 
     _log_action("user.create", "user", uid, {"username": username, "role": role})
 
@@ -379,6 +414,7 @@ def update_user(user_id):
         if "password" in body:
             u["password"] = body["password"]
 
+    _save_data()
     _log_action("user.update", "user", user_id, {"updated_fields": list(body.keys())})
 
     return _resp(200, "success", {
@@ -403,6 +439,7 @@ def delete_user(user_id):
 
     username = USERS[user_id]["username"]
     del USERS[user_id]
+    _save_data()
 
     # 清理该用户的 token
     tokens_to_remove = [t for t, uid in list(TOKENS.items()) if uid == user_id]
@@ -525,6 +562,7 @@ def create_order():
         "cancel_reason": None,
     }
     ORDERS[order_id] = order
+    _save_data()
 
     _log_action("order.create", "order", order_id, {
         "order_no": order["order_no"],
@@ -591,6 +629,7 @@ def update_order(order_id):
         order["amount"] = amount
 
     order["updated_at"] = datetime.now().isoformat() + "Z"
+    _save_data()
 
     _log_action("order.update", "order", order_id, {"updated_fields": list(body.keys())})
 
@@ -622,6 +661,7 @@ def submit_order(order_id):
     order["status"] = "pending"
     order["submitted_at"] = datetime.now().isoformat() + "Z"
     order["updated_at"] = order["submitted_at"]
+    _save_data()
 
     _log_action("order.submit", "order", order_id, {"order_no": order["order_no"]})
 
@@ -663,6 +703,7 @@ def approve_order(order_id):
     order["approver_id"] = current_user["id"]
     order["approver_name"] = current_user["username"]
     order["approval_comment"] = comment
+    _save_data()
 
     _log_action("order.approve", "order", order_id, {
         "order_no": order["order_no"],
@@ -707,6 +748,7 @@ def reject_order(order_id):
     order["approver_id"] = current_user["id"]
     order["approver_name"] = current_user["username"]
     order["approval_comment"] = comment
+    _save_data()
 
     _log_action("order.reject", "order", order_id, {
         "order_no": order["order_no"],
@@ -743,6 +785,7 @@ def complete_order(order_id):
     order["status"] = "completed"
     order["completed_at"] = now
     order["updated_at"] = now
+    _save_data()
 
     _log_action("order.complete", "order", order_id, {"order_no": order["order_no"]})
 
@@ -784,6 +827,7 @@ def cancel_order(order_id):
     order["cancelled_at"] = now
     order["updated_at"] = now
     order["cancel_reason"] = reason or "用户取消"
+    _save_data()
 
     _log_action("order.cancel", "order", order_id, {
         "order_no": order["order_no"],
@@ -911,6 +955,7 @@ def list_logs():
 # ==================== 初始化 ====================
 
 _init_demo_users()
+_load_data()
 
 if __name__ == "__main__":
     port = int(os.environ.get("DEMO_PORT", "11011"))
